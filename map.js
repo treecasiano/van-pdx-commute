@@ -1,12 +1,9 @@
-var map = L.map('map').setView([45.509330, -122.677826], 14);
-var marker = L.marker([45.509330, -122.677826]).addTo(map);
-var circle = L.circle([45.509330, -122.677826], 300, {
-    color: 'yellow',
-    fillColor: 'yellow',
-    fillOpacity: 0.5
-}).addTo(map);
-marker.bindPopup("<b>OCHIN</b>").openPopup();
-circle.bindPopup("I am a circle.");
+var map = L.map('map').setView([45.509330, -122.677826], 11);
+var VancouverMarker = L.marker([45.638728, -122.661486]).addTo(map);
+var OCHINmarker = L.marker([45.509330, -122.677826]).addTo(map);
+
+VancouverMarker.bindPopup("<b>Downtown Vancouver</b>").openPopup();
+OCHINmarker.bindPopup("<b>OCHIN</b>").openPopup();
 
 var mapLink =
     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
@@ -15,7 +12,7 @@ var wholink =
 L.tileLayer(
     'http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
         attribution: '&copy; ' + mapLink + ' Contributors & ' + wholink,
-        maxZoom: 18,
+        maxZoom: 18
     }).addTo(map);
 
 var popup = L.popup();
