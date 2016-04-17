@@ -15,13 +15,31 @@ L.tileLayer(
         maxZoom: 18
     }).addTo(map);
 
-var popup = L.popup();
+// Adding layers with D3
 
-function onMapClick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map);
+d3.json("buslines.geojson", function(collection) {
+
+    var buslines = [collection];
+    L.geoJson(buslines, {
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    overlays["geojson_d3"] = geojson_d3;
+    L.control.layers(baseLayers, overlays).addTo(map);
+});
+
+function onEachFeature(feature, layer) {
+    if (feature.properties) {
+        layer.bindPopup('<b>Bus Line: ' + Number(feature.properties.RTE) + '</b>');
+    }
 }
 
-map.on('click', onMapClick);
+// var popup = L.popup();
+// function onMapClick(e) {
+//     popup
+//         .setLatLng(e.latlng)
+//         .setContent("You clicked the map at " + e.latlng.toString())
+//         .openOn(map);
+// }
+
+// map.on('click', onMapClick);
