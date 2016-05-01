@@ -35,7 +35,7 @@ L.tileLayer(
         maxZoom: 18
     }).addTo(map);
 
-// polyfill for IE 
+// polyfill for IE
 if (!String.prototype.includes) {
     String.prototype.includes = function(search, start) {
         'use strict';
@@ -77,11 +77,10 @@ d3.json("lrt_line.geojson", function(collection) {
 function onEachBuslineFeature(feature, layer) {
     if (feature.properties) {
         var popup = L.popup();
-        // TODO: show popup on mouseover
-        popup.setContent('<b>Bus Line: ' + feature.properties.ROUTE + '</b>');
+        popup.setContent('<b>Bus Line: ' + feature.properties["ROUTE"] + '</b>');
         layer.bindPopup(popup);
         layer.on('mouseover', function() {
-            layer.setStyle({color : 'yellow', opacity: '1'});
+            layer.setStyle(hoverStyle(feature));
         });
         layer.on('mouseout', function() {
             layer.setStyle(styleBus(feature));
@@ -92,11 +91,10 @@ function onEachBuslineFeature(feature, layer) {
 function onEachMaxFeature(feature, layer) {
     if (feature.properties) {
         var popup = L.popup();
-        // TODO: show popup on mouseover
         popup.setContent('<b>Max Line: ' + feature.properties["LINE"] + '</b>');
         layer.bindPopup(popup);
         layer.on('mouseover', function() {
-            layer.setStyle({color : 'orange', opacity: '1'});
+            layer.setStyle(hoverStyle(feature));
         });
         layer.on('mouseout', function() {
             layer.setStyle(styleMax(feature));
@@ -120,12 +118,21 @@ function styleMax(feature) {
     }
 }
 
+function hoverStyle(feature) {
+    return {
+        color: 'orange',
+        weight: '4',
+        opacity: '1'
+    }
+}
+
 function getColor(d) {
     return d === 'Bus' ? "mediumturquoise" : d === 'Light Rail' ? "fuchsia" : "#ff7f00";
 }
 
-// TODO: add more buslines and change color of individual buslines
+// TODO: add more buslines and change color of individual buslines (create subset with QGIS?)
 // TODO: add bus stop shapefiles within walking distance from OCHIN (clip with QGIS?)
 // TODO: style markers and popups
+// TODO: show popup on mouseover
 
 
