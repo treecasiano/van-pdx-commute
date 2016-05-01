@@ -35,6 +35,24 @@ L.tileLayer(
         maxZoom: 18
     }).addTo(map);
 
+// polyfill for IE 
+if (!String.prototype.includes) {
+    String.prototype.includes = function(search, start) {
+        'use strict';
+        if (typeof start !== 'number') {
+            start = 0;
+        }
+
+        if (start + search.length > this.length) {
+            return false;
+        } else {
+            return this.indexOf(search, start) !== -1;
+        }
+    };
+}
+
+
+
 // Adding layers with D3
 d3.json("buslines.geojson", function(collection) {
     var buslines = collection.features.filter(function(item){
@@ -48,7 +66,7 @@ d3.json("buslines.geojson", function(collection) {
 
 d3.json("lrt_line.geojson", function(collection) {
     var maxLines = collection.features.filter(function(item){
-        return item.properties["TYPE"];
+        return item.properties["LINE"].includes("Yellow");
     });
     L.geoJson(maxLines, {
         onEachFeature: onEachMaxFeature,
@@ -109,3 +127,5 @@ function getColor(d) {
 // TODO: add more buslines and change color of individual buslines
 // TODO: add bus stop shapefiles within walking distance from OCHIN (clip with QGIS?)
 // TODO: style markers and popups
+
+
